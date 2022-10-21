@@ -5,10 +5,4 @@ class Book:
         self.description = description
 
     def to_dict(self):
-        return {
-            "id": self.id,
-            "title": self.title,
-            "description": self.description
-            }
-
-
+        return {"id": self.id, "title": self.title, "description": self.description}
