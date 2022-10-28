@@ -1,5 +1,5 @@
 from app.models.books import Book
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, abort, make_response
 
 hello_world_bp = Blueprint("hello_world_bp", __name__)
 
@@ -43,3 +43,20 @@ books_bp = Blueprint("books_bp", __name__)
 def test_book_list():
     books_response = [b.to_dict() for b in test_books]
     return jsonify(books_response)
+
+def validate_book(book_id):
+    try:
+        book_id = int(book_id)
+    except:
+        abort(make_response({"message": f"{book_id} is not valid"}, 400))
+
+    for book in test_books:
+        if book.id == book_id:
+            return jsonify(book.to_dict())
+    abort(make_response({"message": f"{book_id} is not found"}, 404))
+
+
+@books_bp.route("/books/<book_id>", methods=["GET"])
+def single_book_request(book_id):
+    result_book = validate_book(book_id)
+    return result_book 
