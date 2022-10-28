@@ -11,11 +11,7 @@ def handle_books():
         books = Book.query.all()
         books_response = []
         for book in books:
-            books_response.append({
-                "id": book.id,
-                "title": book.title,
-                "description": book.description
-            })
+            books_response.append(book.to_dict())
         return jsonify(books_response)
     elif request.method == "POST":
         request_body = request.get_json()
