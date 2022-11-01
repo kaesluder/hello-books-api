@@ -10,7 +10,12 @@ books_bp = Blueprint("books", __name__, url_prefix="/books")
 
 @books_bp.route("", methods=["GET"])
 def handle_books_get():
-    books = Book.query.all()
+    title_query = request.args.get("title")
+    if title_query: 
+        books = Book.query.filter_by(title=title_query)
+    else:
+        books = Book.query.all()
+
     books_response = []
     for book in books:
         books_response.append(book.to_dict())
