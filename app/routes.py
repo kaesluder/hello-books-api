@@ -36,12 +36,12 @@ def validate_book(book_id):
     try:
         book_id = int(book_id)
     except:
-        abort(make_response({"message":f"book {book_id} invalid"}, 400))
+        abort(make_response(jsonify({"message":f"book {book_id} invalid"}), 400))
 
     book = Book.query.get(book_id)
 
     if not book:
-        abort(make_response({"message":f"book {book_id} not found"}, 404))
+        abort(make_response(jsonify({"message":f"book {book_id} not found"}), 404))
 
     return book
 
@@ -62,7 +62,7 @@ def update_book(book_id):
 
     db.session.commit()
 
-    return make_response(f"Book #{book.id} successfully updated")
+    return make_response(jsonify(f"Book #{book.id} successfully updated"))
 
 @books_bp.route("/<book_id>", methods=["DELETE"])
 def delete_book(book_id):
@@ -71,4 +71,4 @@ def delete_book(book_id):
     db.session.delete(book)
     db.session.commit()
 
-    return make_response(f"Book #{book.id} successfully deleted")
+    return make_response(jsonify(f"Book #{book.id} successfully deleted"))
