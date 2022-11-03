@@ -30,7 +30,7 @@ def handle_books_post():
     db.session.add(new_book)
     db.session.commit()
 
-    return make_response(f"Book {new_book.title} successfully created", 201)
+    return make_response(jsonify(f"Book {new_book.title} successfully created"), 201)
 
 def validate_book(book_id):
     try:
