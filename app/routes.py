@@ -32,28 +32,28 @@ def handle_books_post():
 
     return make_response(jsonify(f"Book {new_book.title} successfully created"), 201)
 
-def validate_book(book_id):
+def validate_model(cls, id):
     try:
-        book_id = int(book_id)
+        id = int(id)
     except:
-        abort(make_response(jsonify({"message":f"book {book_id} invalid"}), 400))
+        abort(make_response(jsonify({"message":f"book {id} invalid"}), 400))
 
-    book = Book.query.get(book_id)
+    record = cls.query.get(id)
 
-    if not book:
-        abort(make_response(jsonify({"message":f"book {book_id} not found"}), 404))
+    if not record:
+        abort(make_response(jsonify({"message":f"book {id} not found"}), 404))
 
-    return book
+    return record
 
 @books_bp.route("/<book_id>", methods=["GET"])
 def handle_single_book(book_id):
-    book = validate_book(book_id)
+    book = validate_model(Book, book_id)
     return book.to_dict()
 
 
 @books_bp.route("/<book_id>", methods=["PUT"])
 def update_book(book_id):
-    book = validate_book(book_id)
+    book = validate_model(Book, book_id)
 
     request_body = request.get_json()
 
@@ -66,7 +66,7 @@ def update_book(book_id):
 
 @books_bp.route("/<book_id>", methods=["DELETE"])
 def delete_book(book_id):
-    book = validate_book(book_id)
+    book = validate_model(Book, book_id)
 
     db.session.delete(book)
     db.session.commit()
