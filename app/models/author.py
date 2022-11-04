@@ -16,5 +16,5 @@ class Author(db.Model):
 
     def to_dict(self):
         return dict(id = self.id,
-        title = self.name)
+        name = self.name)
 
